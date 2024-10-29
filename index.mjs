@@ -140,8 +140,6 @@ Keep up the great work! 💪
 
         res.send({ success: true, message: "Broadcast completed with live updates" });
     } catch (error) {
-        // Only try to edit the message if messageId is defined
-        if (messageId) await editMessage(admin_id, messageId, 'FAILED TO BROADCAST', token);
         res.status(500).send({ success: false, message: 'Error during broadcast', error });
     }
 });
