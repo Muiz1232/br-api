@@ -80,13 +80,10 @@ app.post('/broadcast', async (req, res) => {
         // Notify admin about the start of the broadcast
         let adminMessage;
         let messageId;
-        try {
+        
             adminMessage = await sendMessage(admin_id, `**🔎**`, token);
             messageId = adminMessage.result.message_id;
-        } catch (error) {
-            return res.status(500).send({ success: false, message: 'Error notifying admin', error });
-        }
-
+            
         // Initialize counters
         let stats = { success: 0, failed: 0, blocked: 0, deleted: 0 };
 
