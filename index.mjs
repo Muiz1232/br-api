@@ -76,13 +76,9 @@ app.post('/broadcast', async (req, res) => {
         const usersData = await fs.readJson(userFile);
         const users = usersData.users;
         const totalUsers = users.length;
-
-        // Notify admin about the start of the broadcast
-        let adminMessage;
-        let messageId;
         
-            adminMessage = await sendMessage(admin_id, `**🔎**`, token);
-            messageId = adminMessage.result.message_id;
+        const adminMessage = await sendMessage(admin_id, `**🔎**`, token);
+        const messageId = adminMessage.result.message_id;
             
         // Initialize counters
         let stats = { success: 0, failed: 0, blocked: 0, deleted: 0 };
