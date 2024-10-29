@@ -1,11 +1,12 @@
-const express = require('express');
-const fs = require('fs-extra');
+import express from'express';
+import fs from'fs-extra';
+import fetch from 'node-fetch';
+
 
 const app = express();
 app.use(express.json());
 
 const sendMessage = async (chatId, text, token) => {
-    const fetch = (await import('node-fetch')).default;
     const url = `https://api.telegram.org/bot${token}/sendMessage`;
     try {
         const response = await fetch(url, {
@@ -24,7 +25,6 @@ const sendMessage = async (chatId, text, token) => {
 
 // Helper function to edit a message via Telegram
 const editMessage = async (chatId, messageId, text, token) => {
-    const fetch = (await import('node-fetch')).default;
     const url = `https://api.telegram.org/bot${token}/editMessageText`;
     try {
         const response = await fetch(url, {
