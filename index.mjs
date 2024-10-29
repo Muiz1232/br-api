@@ -109,7 +109,7 @@ app.post('/broadcast', async (req, res) => {
 
 Keep up the great work! 💪
                 `;
-                await editMessage(admin_id, messageId, statusText, token);
+                editMessage(admin_id, messageId, statusText, token);
 
             } catch (error) {
                 if (error.response && error.response.status === 403) {
@@ -131,7 +131,7 @@ Keep up the great work! 💪
 
 Keep up the great work! 💪
                 `;
-                await editMessage(admin_id, messageId, statusText, token);
+                editMessage(admin_id, messageId, statusText, token);
             }
         }
 
