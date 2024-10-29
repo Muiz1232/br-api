@@ -77,9 +77,19 @@ app.post('/broadcast', async (req, res) => {
         const users = usersData.users;
         const totalUsers = users.length;
         
-        const adminMessage = await sendMessage(admin_id, `**🔎**`, token);
-        const messageId = adminMessage.result.message_id;
-            
+        // Initialize messageId to null
+        let messageId = null;
+
+        try {
+            // Notify admin about the start of the broadcast
+            const adminMessage = await sendMessage(admin_id, `**🔎**`, token);
+            messageId = adminMessage.result.message_id;
+        } catch (error) {
+            console.error("Error sending initial message to admin:", error);
+            res.status(500).send({ success: false, message: "Failed to notify admin about broadcast start" });
+            return;
+        }
+
         // Initialize counters
         let stats = { success: 0, failed: 0, blocked: 0, deleted: 0 };
 
@@ -102,7 +112,7 @@ app.post('/broadcast', async (req, res) => {
 
 Keep up the great work! 💪
                 `;
-                editMessage(admin_id, messageId, statusText, token);
+                if (messageId) await editMessage(admin_id, messageId, statusText, token);
 
             } catch (error) {
                 if (error.response && error.response.status === 403) {
@@ -124,13 +134,14 @@ Keep up the great work! 💪
 
 Keep up the great work! 💪
                 `;
-                editMessage(admin_id, messageId, statusText, token);
+                if (messageId) await editMessage(admin_id, messageId, statusText, token);
             }
         }
 
         res.send({ success: true, message: "Broadcast completed with live updates" });
     } catch (error) {
-        await editMessage(admin_id, messageId, 'FAILED TO BROADCAST', token);
+        // Only try to edit the message if messageId is defined
+        if (messageId) await editMessage(admin_id, messageId, 'FAILED TO BROADCAST', token);
         res.status(500).send({ success: false, message: 'Error during broadcast', error });
     }
 });
